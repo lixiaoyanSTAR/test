@@ -1,0 +1,56 @@
+1.解决手机点击延迟300ms（fastclick.js）
+2.安卓手机无法识别promise 
+3.ReactDOM.render()
+    作用：将模板转为HTML语言，并插入指定的DOM节点
+    传两个参数
+        1.创建的模版
+        2.插入模版的目标位置
+4.关于service worker的缓存知识
+5.es6中的import和export default
+    分别代表导入和输出模块
+6.react为什么自动跑3000的端口
+    react-script包中自动跑的是3000
+    需要更改的话 直接将package.json中的script改为 "start": "set PORT=3001&&react-scripts start",
+7.虚拟DOM
+    创建一个虚拟的DOM树，每次更改 会先将新DOM和旧DOM进行对比，得出变更的部分，得出diff，最终更新到DOM中
+    优点：非常高效的渲染
+    缺点：首次渲染大量DOM时，由于多一层虚拟DOM计算，相对慢
+8.shouldComponentUpdate钩子函数
+    设置当props和state没发生改变时不被渲染
+    shouldComponentUpdate(nextProps, nextState){
+        if (nextProps === this.props){ // 同理 nextState === this.state
+            return false
+        }
+        return true
+    }
+9.react周期
+    constructor构造函数，在创建组件的时候调用一次
+    componentWillMount: 组件首次渲染之前调用
+    componentDidMount： 首次真实DOM渲染后调用
+    componentWillReceiveProps：更新props调用
+    shouldComponentUpdate：组件挂载后，每次调用setState都会调用shouldComponentUpadate判断是否重新渲染组件
+    componentWillUpdate：shouldComponentUpdate返回True,调用
+    componentDidUpdate：除了首次render之后调用componentDidMount，其他render结束之后都是调用componentDidUpdate
+    componentWillUnmount
+10.调用setState之后发生了什么
+    调用setState时，React会将传递给setState对象合并到组件的当前状态，并启动一个成为和解的过程。和解的最终目标是以最有效的方式，根据这个新的状态更新ui。为此react将创建一个新的react元素树，一旦有了这个树，react会将这个新树预上一个元素树比较，react就清楚发生确切的变化，只需要在绝对必要的情况下进行更新即可最小化ui的占用空间
+11.react中的element和component有什么区别
+    element就是react实现界面内容的最小单元，代表虚拟DOM的一个对象
+    组件就是一个方法或者一类，可接受输入，之后放回一个react元素
+12.this.props.children
+13.this.setState({})是同步还是异步的？
+14react组件之间的通信
+15.Redux，react-redux等原理
+16.高阶组件是什么和常见的高阶组件
+    常见的封装的表单组件
+17.React key是干嘛的？
+    key是一个字符串，用来标识同父同级层的兄弟元素。当react做diff时，便会去原v-dom树，虚招是否有同key元素，比较是否完全想通，若一样，则复用该元素
+18.react如何实现异步的网络请求
+    使用redux-thunk
+    redux-deferred
+19.受控组件和非受控组件
+    受控组件（input中添加了value值的组件）
+        <input  value = 'hello' /> 
+        value属性的表单组件元素不会维护自己状态state value值一旦设置某个具体值就始终是这个值，需要调用者来控制组件value值的更改
+    非受控组件（input中没有添加value值的组件）
+        <input value={this.state.value}/>

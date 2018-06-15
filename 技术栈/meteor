@@ -1,0 +1,96 @@
+1.传统的web应用的加载、解析、渲染
+    。。。一系列的url解析过程
+    服务器返回一个HTML响应 -> 浏览器开始显示HTML
+    在显示HTML中，需要获取其他的资源，浏览器就会重新发送请求获取资源（主要css，js，图片等）
+    回流／重排：发现某个节点的变化影响其他的布局才发生
+    重绘：改变某元素的背景颜色，文字颜色等，不影响页面部署的时候发生，此时不会发生重排
+    减少重排和重绘
+        不要一条条修改DOM，可预先定义好css的class，然后修改DOM的className
+        不要把DOM节点的属性值放在一个循环里当变量
+        position的fixed和absoult修改css属性值不会重排
+        不要使用table布局，小的改动可能要整个table重新布局，而且table需要完全加载完成后才能继续加载
+2.meteor的工作原理
+    a.首次访问meteor，会从服务器将需要用到的资源加载到客户端（如js， css，字体，图片）并创建一个mini数据库，再与服务器端建立好数据通信通道
+    b.mini数据库（数据库只支持MongoDB）
+        主要作用：缓存当前客户端用到的数据
+        工作内容：用户操作保存一条数据，Meteor会先保存到miniMongoDB，保存成功后立即反馈给用户，同事把数据同步到服务器端真实的数据库中
+    c.Tracker
+        作用：响应式的功能，Tracker会跟踪目标数据，当其有任何变化后，都会重新计算使用到目标数据的地方
+    d.DDP
+        作用：传输数据（meteor主要是传输数据，http协议不大合适）
+        特点：DDP基于websocket实现全双工的数据传输，服务器可以主动向客户端发送资源
+            DDP使用JSON格式封装数据，MongoDB存储文档的结构是json，客户端的js对json处理也非常方便，所以客户端和服务器端的数据沟通变得极其自然
+3.发布（publish）和订阅(subscribe)
+4.websocket
+5.mantra-core // 应用的唯一入口
+    在app中定义业务逻辑的地方，他本身不提供状态管理，但是允许你使用状态管理工具，如redux
+    通过创建容器（container），使状态（state）和动作（actions）集成到ui组件中
+    会关注应用打包，网络传输，应用部署等，基于meteor应用框架
+    
+    import { createdApp } from 'mantra-core'
+    import initContext from './configs/context'
+    import coreModule from './module/coreModule'
+    import { combineReducers } from 'redux'
+    import { routerReducer } from 'react-router-redux'
+
+    //combine Reducers
+    const reducer = combineReducers({
+        // 模块的reducer
+        ...
+        // 初始化routerReducer
+        routing: routerReducer
+    })
+
+    // init context
+    const context = initContext()
+
+    const app = createdApp(context)
+    app.loadModule(coreModule)
+    app.init()
+6.configs(前端client文件夹下的文件夹)
+    文件夹下的context.js是整个应用的配置，能被所有模块使用
+7.mdg:validated-method
+    后台：创建new ValidatedMethod实例
+        new ValidatedMethod({
+            name： 'DDP方法名',
+            validate:new SimpleSchema({
+                name: {
+                    type: String,
+                },
+                department: {
+                    type: String,
+                },
+            }).validator(), //参数
+            run({ name, department }) {
+                Collection //请求数据库数据
+            }
+        })
+    前台：_Meteor.cal(({}) => {
+        callback(err, res)
+        }
+    })
+8.react-komposer 
+    export const composer = ({ context }, onDate) => {
+        onData(null, { hasUser })
+    }
+9.统一的状态管理（将状态和动作集成到ui组件中）
+    // 响应式的将状态传给组件
+    // 将actions中的方法统一发布
+
+    import { useDeps, composeWithTracker, composeAll } from 'mantra-core'
+    // 传入当前模块的组件 
+    import Component from '../component'
+    export const composer = ({ context }, onData) => {
+        onData(null)
+    }
+    // 从依赖注册层获取数据
+    export const depsMapper = (context, actions) => {
+        ...actions.(当前模块的方法名),
+        context: () => context,
+    }
+
+    export default composeAll(
+        composeWithTracker(composer),
+        useDeps(depsMapper)
+    )(Component)
+10.LocalState.get  meteor中的这种值是哪里来的

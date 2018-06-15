@@ -1,0 +1,131 @@
+1.css盒子模型？低版本 IE盒子模型有什么不同
+    CSS盒子模型有两种：IE盒子模型、W3C盒子模型
+    盒模型：内容（content）+内边距（padding）+边框（border）+外边距（margin）
+    区别：IE的content部分把border和padding计算了进去
+2.CSS选择器？哪些属性可继承
+    id选择器    (#my)
+    类选择器    (.my) 
+    标签选择器  (div, h1, p)
+    相邻选择器  (h1+p)
+    子选择器    (div>p)
+    后代选择器  (div p)
+    通配符选择器 (*)
+    属性选择器  (a[rel="external"])
+    伪类选择器  (div:before)
+
+    可继承的属性    font-size, font-family, color
+    不可继承的属性  border padding margin height width
+3.CSS优先级算法？
+    就近原则，同权重下样式定义最近者为准
+    载入样式以最后载入的定位为准
+    优先级：
+        同权重：內联样式表（标签内部）>嵌入样式表（当前文件中）>外部样式表（外部文件中）
+        !important > id > class > tag
+        important比内联优先级高
+4.CSS3新增伪类有哪些？
+    ::after 在元素之后添加内容
+    ::before    在元素之前添加内容
+    :disabled   控制表单控件的禁用状态
+    :checked    单选框或复选框被选中
+5.div居中
+    水平居中
+        普通元素：div{
+                    height:50px;
+                    width:50px;
+                    margin: 0 auto;
+                    background: red;
+                }
+        绝对定位：
+            div{
+                position: absolute;
+                width: 200px;
+                height: 100px;
+                margin: 0 auto;
+                left: 0;
+                right: 0;
+                background: red;
+            }
+        浮动元素：
+            container{
+                margin: 0 auto;
+                div{
+                    float:left;
+                    width:50px;
+                    height:50px;
+                    background:red;
+                }
+            }
+    水平垂直居中
+        已知容器的宽高
+            div{
+                position:relative;
+                width:500px;
+                height:500px;
+                top:50%;
+                left:50%;
+                margin: -150px 0 0 -250px;
+                background:red;
+            }
+        未知容器的宽高：
+            div{
+                position:absolute;
+                width:500px;
+                height:300px;
+                top:50%;
+                left:50%;
+                transform: translate(-50%, -50%);
+                background: red;
+            }
+        flex布局
+            .container{
+                display:flex;
+                justify-content:center;
+                align-items:center;
+            }
+            .container div{
+                width:100px;
+                height:100px;
+                background:red;
+            }
+6.display的值
+    block:块类型，默认宽度为父元素宽度，可设置宽高，换行显示
+    none:缺省值，像行内元素类型一样显示
+    inline:行内元素类型，默认宽度为内容宽高，不可设置宽度，同行显示
+    inline-block:默认宽度为内容宽度，可设置宽高，同行显示
+    list-item：像块类型元素一样显示，并添加样式列表标记
+    table：此元素会作为块级表格来显示
+    inherit：规定应该从父元素继承display属性的值
+7.position的relative和absolute定位原点？
+    absolute ：绝对定位，相对于值不为static的第一个父元素进行定位
+    fixed：生成固定定位，相对于浏览器窗口定位
+    relative：相对定位：相对于器正常位置进行定位
+    static：默认值，没有定位，元素出现在正常文档流中
+    inherit：从父元素继承position属性值
+8.CSS新增特性
+    新增选择器
+    border-radius
+    shadow/reflect
+    线性渐变（gradient）
+    旋转transform
+    缩放，定位，倾斜，动画transform:scale(0.85, 0.90)\translate(0px, -30px)\skew(-9deg, -deg)\Animation()
+9.纯css创建一个三角形3
+    将上、左、右三边隐藏(颜色为transparent)
+    div{
+        width: 0;
+        height: 0;
+        border-top: 40px solid transparent;
+        border-left: 40px solid transparent;
+        border-right: 40px solid transparent;
+        border-bottom: 40px solid #ff0000;
+    }
+10.“品”字布局的设计
+    上面div宽100%
+    下面的两个div分别宽50%
+    使用float或者inline使其不换行
+11.浏览器的兼容性，常用的hack技巧
+12.li和li之间有看不见的空白间隔原因，和解决办法？
+    行框的排列会受到中间空白（回车、空格）等的影响，因为空格也属于字符，这些空白也会被应用样式，占据空间，所以会有间隔，把字符大小设置为0，就没有空格了
+    若display:none,则position,float不起作用
+    若position：absolute或者fixed绝对定位，则float不起作用
+    若float不为none，元素脱离文档流，根据float属性值显示
+    有浮动，绝对定位，inline-block属性的元素，margin不会和垂直方向上的其他元素margin折叠

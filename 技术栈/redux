@@ -1,0 +1,9 @@
+1.store.dispath()分发action
+2.redux的执行流程
+3.connect()
+4.react-redux
+5.Provide()
+6.容器组件和展示组件
+    容器组件 <Provide store={store}></Provide>
+    展示组件connect()()
+7.combineReducers
